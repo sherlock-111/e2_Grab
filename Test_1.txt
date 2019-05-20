@@ -1,7 +1,7 @@
-if(first()|dupefinished()){
-holoCreate(0)
-holoModel(0, "models/bobsters_trains/wheels/standard/wheel_54_double.mdl")
-holoPos(0,E:toWorld(vec(0,0,0)))
-holoAng(0, E:toWorld(ang(0,0,0)) )
-holoParent(0, E)
-}
+    A=1
+    holoCreate(A,E:toWorld(vec(0,0,0)))
+    holoAng(A,E:toWorld(ang(0,0,0)))
+    holoScale(A,vec(1))
+    holoModel(A,"models/bobsters_trains_2/modular_rod/rod_center.mdl")
+    holoParent(A,E) 
+
