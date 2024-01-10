@@ -1,1 +1,60 @@
- Hello world
+Sub ForwardAndGreetWithTextAndThanks()
+    Dim olItem As Outlook.mailItem
+    Dim olForward As Outlook.mailItem
+    Dim olApp As Outlook.Application
+    Dim strRecipient As String
+    Dim strGreeting As String
+    Dim strAdditionalText As String
+    Dim strThanksText As String
+    
+    ' Get the currently selected email
+    Set olApp = Outlook.Application
+    On Error Resume Next
+    Set olItem = olApp.ActiveExplorer.Selection(1)
+    On Error GoTo 0
+    
+    ' Check if an email is selected
+    If olItem Is Nothing Then
+        MsgBox "Please select an email to forward.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' Get the original recipient (To) address
+    strRecipient = olItem.To
+    
+    ' Create a new forward email
+    Set olForward = olItem.Forward
+    
+    ' Add the original recipient to the "To" field of the new email
+    olForward.To = strRecipient
+    
+    ' Extract the name from the recipient's address
+    Dim arrRecipientInfo() As String
+    arrRecipientInfo = Split(strRecipient, "@")
+    Dim strRecipientName As String
+    strRecipientName = arrRecipientInfo(0)
+    
+    ' Create a greeting using the name of the recipient
+    strGreeting = "Hi " & strRecipientName & ","
+    
+    ' Specify additional text to include in the forwarded email
+    strAdditionalText = "Thank you for your attention to this matter.<br>" & _
+                        "We appreciate your prompt response.<br>" & _
+                        "Please let us know if you have any questions or concerns."
+    ' Specify thanks text
+    strThanksText = "Thanks,"
+    
+    ' Append the greeting, additional text, and thanks text to the HTMLBody of the forward email
+    olForward.htmlBody = "<p>" & strGreeting & "</p>" & _
+                        "<p>" & strAdditionalText & "</p>" & _
+                        "<p>" & strThanksText & "</p>" & _
+                        vbCrLf & olForward.htmlBody
+    
+    ' Change the subject of the forward email
+    olForward.Subject = "Phishing Reply"
+    
+    ' Display the new forward email
+    olForward.Display
+End Sub
+
+
